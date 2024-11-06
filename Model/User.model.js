@@ -1,0 +1,107 @@
+import { DataTypes } from "sequelize";
+
+const User = (sequelize) => {
+  return sequelize.define("user", {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    username: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+      validate: {
+        isAlphanumeric: true,
+        length: {
+          args: [3, 20],
+          msg: "Username must be between 3 and 20 characters",
+        },
+        notNull: {
+          msg: "Username is required",
+        },
+        notEmpty: {
+          msg: "Username cannot be empty",
+        },
+        notContains: {
+          args: [" "],
+          msg: "Username cannot contain spaces",
+        },
+        notContains: {
+          args: ["@"],
+          msg: "Username cannot contain @",
+        },
+      },
+      set(value) {
+        this.setDataValue("username", value.toLowerCase());
+      },
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+      validate: {
+        isEmail: true,
+        notNull: {
+          msg: "Email is required",
+        },
+        notEmpty: {
+          msg: "Email cannot be empty",
+        },
+        notContains: {
+          args: [" "],
+          msg: "Email cannot contain spaces",
+        },
+      },
+      set(value) {
+        this.setDataValue("email", value.toLowerCase());
+      },
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: "Password is required",
+        },
+        notEmpty: {
+          msg: "Password cannot be empty",
+        },
+        notContains: {
+          args: [" "],
+          msg: "Password cannot contain spaces",
+        },
+        len: {
+          args: [8, 20],
+          msg: "Password must be between 8 and 20 characters",
+        },
+        is: {
+          args: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/,
+          msg: "Password must contain at least one uppercase letter, one lowercase letter, one number and one special character",
+        },
+      },
+    },
+    role: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: "user",
+      validate: {
+        isIn: {
+          args: [["user", "admin"]],
+          msg: "Role must be either user or admin",
+        },
+        notNull: {
+          msg: "Role is required",
+        },
+        notEmpty: {
+          msg: "Role cannot be empty",
+        },
+      },
+      set(value) {
+        this.setDataValue("role", value.toUpperCase());
+      },
+    },
+  });
+};
+
+export default User;
