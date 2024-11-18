@@ -9,7 +9,20 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "migrate": "npx sequelize-cli db:migrate",
+    "seed": "npx sequelize-cli db:seed:all",
+    "seed:undo": "npx sequelize-cli db:seed:undo:all",
+    "docker_compose_up": "docker compose up --build -d",
+    "docker_compose_down": "docker compose down",
+    "docker_compose_logs": "docker compose logs -f",
+    "docker_compose_logs_db": "docker compose logs -f postgres",
+    "docker_rebuild": "docker compose up --build -d --force-recreate",
+    "docker_rebuild_db": "docker compose up --build -d --force-recreate postgres",
+    "docker_compose_down_db": "docker compose down postgres",
+    "docker_remove_container": "docker rm -f $(docker ps -a -q)",
+    "docker_remove_image": "docker rmi -f $(docker images -a -q)",
+    "db_seed": "node ./db-seeder.js"
   },
   "keywords": [],
   "author": "",
@@ -18,11 +31,13 @@
   "dependencies": {
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
+    "express-async-handler": "^1.2.0",
     "http-status-codes": "^2.3.0",
     "pg": "^8.13.1",
     "sequelize": "^6.37.5"
   },
   "devDependencies": {
+    "@faker-js/faker": "^9.2.0",
     "nodemon": "^3.1.7"
   }
 }

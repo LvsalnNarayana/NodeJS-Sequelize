@@ -4,6 +4,8 @@ if (
   !process.env.POSTGRES_PASSWORD ||
   !process.env.POSTGRES_HOST
 ) {
+  console.log(process.env.POSTGRES_DB);
+  
   throw new Error("Missing required environment variables");
 }
 

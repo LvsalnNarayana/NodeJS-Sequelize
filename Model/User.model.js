@@ -1,10 +1,14 @@
 import { DataTypes } from "sequelize";
+import sequelize from "../Utils/connectDB.js";
 
-const User = (sequelize) => {
-  return sequelize.define("user", {
+const User = sequelize.define(
+  "user",
+  {
     id: {
-      type: DataTypes.INTEGER,
+      allowNull: false,
       autoIncrement: true,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
     username: {
@@ -12,8 +16,8 @@ const User = (sequelize) => {
       allowNull: false,
       unique: true,
       validate: {
-        isAlphanumeric: true,
-        length: {
+        // isAlphanumeric: true,
+        len: {
           args: [3, 20],
           msg: "Username must be between 3 and 20 characters",
         },
@@ -75,10 +79,10 @@ const User = (sequelize) => {
           args: [8, 20],
           msg: "Password must be between 8 and 20 characters",
         },
-        is: {
-          args: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/,
-          msg: "Password must contain at least one uppercase letter, one lowercase letter, one number and one special character",
-        },
+        // is: {
+        //   args: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/,
+        //   msg: "Password must contain at least one uppercase letter, one lowercase letter, one number and one special character",
+        // },
       },
     },
     role: {
@@ -101,7 +105,20 @@ const User = (sequelize) => {
         this.setDataValue("role", value.toUpperCase());
       },
     },
-  });
-};
+    createdAt: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+      allowNull: false,
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+      allowNull: false,
+    },
+  },
+  {
+    indexes: [{ unique: true, fields: ["username"] }],
+  }
+);
 
 export default User;

@@ -1,5 +1,5 @@
 // import dotenv from "dotenv";
-import 'dotenv/config'
+import "dotenv/config";
 import express, { json } from "express";
 import { StatusCodes } from "http-status-codes";
 import sequelize from "./Utils/connectDB.js";
@@ -26,9 +26,8 @@ app.use("/users", userRouter);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-    message: "Something went wrong",
+  res.status(err?.status).json({
+    message: err?.message,
   });
 });
 

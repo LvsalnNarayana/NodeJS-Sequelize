@@ -1,7 +1,7 @@
 import { Sequelize } from "sequelize";
 import { dbConfig } from "./config.js";
 
-//"host.docker.internal" this is host for docker on mac system 
+//"host.docker.internal" this is host for docker on mac system
 const sequelize = new Sequelize(
   dbConfig.database,
   dbConfig.username,
@@ -9,6 +9,12 @@ const sequelize = new Sequelize(
   {
     host: dbConfig.host,
     dialect: dbConfig.dialect,
+    pool: {
+      max: 5,
+      min: 0,
+      acquire: 30000,
+      idle: 10000,
+    },
   }
 );
 
